@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: node-backend
-        image: imagetoupload
+        image: david8bullet/mern_workout_terraform_infra_backend
         ports:
         - containerPort: 5000
         env:
