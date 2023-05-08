@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostname-deployment-dd
+  ##igy fogjak hivni
+  labels:
+    app: hostname
+  #service discoevery alapja,ez alapjan talajak meg egymast a podok
+spec:
+  replicas: 1
+  #
+  strategy:
+    type: Recreate
+    #default a rolling update
+  selector:
+    matchLabels:
+      #hostname-nek egyeznie kell label-el!! 
+      app: hostname
+  #ez alatt ez egy pod specifikacio
+  template:
+    metadata:
+      labels:
+        app: hostname
+    spec:
+      containers:
+      - name: hostname
+        image: david8bullet/hostname
+        ports:
+        - containerPort: 8090
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1"
+          requests:
+            memory: 256Mi
+            cpu: "0.2"
+      
