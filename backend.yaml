@@ -16,9 +16,27 @@ spec:
     spec:
       containers:
       - name: node-backend
-        image: mongo:5.0
+        image: imagetoupload
         ports:
         - containerPort: 5000
+        env:
+        - name: USER_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-user
+        - name: USER_PWD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: mongo-password
+        - name: USER_PWD
+          valueFrom:
+            configMapKeyRef:
+              name: mongo-config
+              key: mongo-url
+
+
 
 ---
 
@@ -27,9 +45,14 @@ kind: Service
 metadata:
   name: node-backend-service
 spec:
+  type: NodePort
   selector:
+  
     app: node-backend
   ports:
     - protocol: TCP 
       port: 8090
       targetPort: 5000
+      NodePort: 30100
+# 30000-32767 is valid
+

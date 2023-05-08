@@ -2,25 +2,25 @@ provider "aws" {
   region = "eu-central-1"
 }
 
-resource "aws_vpc" "eks_vpc_cluster_dd" {
+resource "aws_vpc" "eks_vpc_cluster_mern" {
   cidr_block = "10.0.0.0/16"
 }
 
-resource "aws_subnet" "eks_subnet_cluster_dd_1" {
-  vpc_id            = aws_vpc.eks_vpc_cluster_dd.id
+resource "aws_subnet" "eks_subnet_cluster_mern" {
+  vpc_id            = aws_vpc.eks_vpc_cluster_mern.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = "eu-central-1a"
 }
 
-resource "aws_subnet" "eks_subnet_cluster_dd_2" {
-  vpc_id            = aws_vpc.eks_vpc_cluster_dd.id
+resource "aws_subnet" "eks_subnet_cluster_mern2" {
+  vpc_id            = aws_vpc.eks_vpc_cluster_mern.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = "eu-central-1b"
 }
 
-resource "aws_security_group" "eks_security_group_cluster_dd" {
+resource "aws_security_group" "eks_security_group_cluster_mern" {
   name_prefix = "eks_sg_"
-  vpc_id      = aws_vpc.eks_vpc_cluster_dd.id
+  vpc_id      = aws_vpc.eks_vpc_cluster_mern.id
   
   ingress {
     from_port   = 22
@@ -30,8 +30,8 @@ resource "aws_security_group" "eks_security_group_cluster_dd" {
   }
 }
 
-resource "aws_iam_role" "eks_cluster_dd" {
-  name = "eks_cluster_dd"
+resource "aws_iam_role" "eks_cluster_mern" {
+  name = "eks_cluster_mern"
 
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
@@ -45,30 +45,30 @@ resource "aws_iam_role" "eks_cluster_dd" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "eks_cluster_dd_attach" {
+resource "aws_iam_role_policy_attachment" "eks_cluster_mern_attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.eks_cluster_dd.name
+  role       = aws_iam_role.eks_cluster_mern.name
 
   depends_on = [
-    aws_iam_role.eks_cluster_dd,
+    aws_iam_role.eks_cluster_mern,
   ]
 }
 
-resource "aws_eks_cluster" "prometheus_grafana_cluster_dd" {
-  name     = "prometheus-grafana-cluster-dd"
-  role_arn = aws_iam_role.eks_cluster_dd.arn
+resource "aws_eks_cluster" "cluster_mern" {
+  name     = "cluster-mern"
+  role_arn = aws_iam_role.eks_cluster_mern.arn
 
   vpc_config {
-    security_group_ids = [aws_security_group.eks_security_group_cluster_dd.id]
-    subnet_ids         = [aws_subnet.eks_subnet_cluster_dd_1.id, aws_subnet.eks_subnet_cluster_dd_2.id]
+    security_group_ids = [aws_security_group.eks_security_group_cluster_mern.id]
+    subnet_ids         = [aws_subnet.eks_subnet_cluster_mern.id, aws_subnet.eks_subnet_cluster_mern2.id]
   }
 
   tags = {
-    Name = "eks_vpc_cluster_dd"
+    Name = "eks_vpc_cluster_mern"
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.eks_cluster_dd_attach
+    aws_iam_role_policy_attachment.eks_cluster_mern
   ]
 }
 
@@ -101,11 +101,11 @@ resource "aws_iam_policy_attachment" "ecr_read_only_policy_attachment" {
 }
 
 
-resource "aws_eks_node_group" "my_node_group_dd" {
-  cluster_name    = aws_eks_cluster.prometheus_grafana_cluster_dd.name
-  node_group_name = "my-node-group-dd"
+resource "aws_eks_node_group" "my_node_group" {
+  cluster_name    = aws_eks_cluster.cluster_mern.name
+  node_group_name = "my-node-group"
   node_role_arn   = aws_iam_role.my_node_role.arn
-  subnet_ids      = [aws_subnet.eks_subnet_cluster_dd_1.id, aws_subnet.eks_subnet_cluster_dd_2.id]
+  subnet_ids      = [aws_subnet.eks_subnet_cluster_mern.id, aws_subnet.eks_subnet_cluster_mern2.id]
   scaling_config {
     desired_size = 2
     max_size     = 2
@@ -122,14 +122,14 @@ resource "aws_eip" "nat" {
 
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.eks_subnet_cluster_dd_1.id
+  subnet_id     = aws_subnet.eks_subnet_cluster_mern.id
 }
 
 
 
 resource "aws_nat_gateway" "nat2" {
   allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.eks_subnet_cluster_dd_2.id
+  subnet_id     = aws_subnet.eks_subnet_cluster_mern2.id
 }
 
 
