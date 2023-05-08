@@ -6,6 +6,21 @@ resource "aws_vpc" "eks_vpc_cluster_mern" {
   cidr_block = "10.0.0.0/16"
 }
 
+resource "aws_internet_gateway" "my_igw_mern" {
+  vpc_id = aws_vpc.eks_vpc_cluster_mern.id
+}
+
+resource "aws_route_table" "my_route_table_mern" {
+  vpc_id = aws_vpc.eks_vpc_cluster_mern.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my_igw_mern.id
+  }
+}
+
+
+
 resource "aws_subnet" "eks_subnet_cluster_mern" {
   vpc_id            = aws_vpc.eks_vpc_cluster_mern.id
   cidr_block        = "10.0.1.0/24"
@@ -68,7 +83,7 @@ resource "aws_eks_cluster" "cluster_mern" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.eks_cluster_mern
+    aws_iam_role_policy_attachment.eks_cluster_mern_attach
   ]
 }
 
