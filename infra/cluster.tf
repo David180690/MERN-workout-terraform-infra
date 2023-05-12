@@ -179,6 +179,44 @@ resource "aws_nat_gateway" "nat" {
 }
 
 
+
+////kellll
+# resource "aws_eks_node_group" "this" {
+#   cluster_name    = aws_eks_cluster.this.name
+#   node_group_name = "eks-node-group"
+#   node_role_arn   = aws_iam_role.eks_node.arn
+#   subnet_ids      = aws_subnet.private.*.id
+
+#   scaling_config {
+#     desired_size = 2
+#     max_size     = 3
+#     min_size     = 1
+#   }
+
+#   launch_template {
+#     id      = aws_launch_template.this.id
+#     version = aws_launch_template.this.latest_version
+#   }
+# }
+
+# resource "aws_launch_template" "this" {
+#   name_prefix   = "eks-node-group"
+#   image_id      = data.aws_ami.eks_worker.id
+#   instance_type = "t2.small"
+#   key_name      = "your-key-pair-name"
+
+#   user_data = base64encode(templatefile("${path.module}/userdata.tpl", {
+#     cluster_name = local.cluster_name
+#     endpoint     = aws_eks_cluster.this.endpoint
+#     cluster_ca   = aws_eks_cluster.this.certificate_authority[0].data
+#   }))
+
+#   iam_instance_profile {
+#     name = aws_iam_instance_profile.eks_node.name
+#   }
+# }
+////
+
 //
 # resource "aws_launch_template" "example" {
 #   name_prefix   = "example-template"
