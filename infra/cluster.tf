@@ -42,7 +42,32 @@ resource "aws_subnet" "eks_subnet_cluster_mern2" {
   availability_zone = "eu-central-1b"
 }
 
+///////
+resource "aws_iam_policy" "ec2_describe_network_interfaces_policy" {
+  name        = "ec2-describe-network-interfaces-policy"
+  description = "Allows describing EC2 network interfaces"
 
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "ec2:DescribeNetworkInterfaces",
+        "Resource": "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ec2_describe_network_interfaces_attachment" {
+  policy_arn = aws_iam_policy.ec2_describe_network_interfaces_policy.arn
+  role       = aws_iam_role.eks_cluster_mern.name
+}
+
+
+
+
+///////
 
 resource "aws_security_group" "eks_security_group_cluster_mern" {
   name_prefix = "eks_sg_"
@@ -141,6 +166,8 @@ resource "aws_eks_node_group" "my_node_group" {
     Terraform   = "true"
     Environment = "dev"
   }
+
+#launch template...
 }
 resource "aws_eip" "nat" {
   vpc = true
@@ -150,6 +177,73 @@ resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.eks_subnet_cluster_mern.id
 }
+
+
+//
+# resource "aws_launch_template" "example" {
+#   name_prefix   = "example-template"
+#   image_id      = "ami-12345678"
+#   instance_type = "t2.micro"
+
+#   block_device_mappings {
+#     device_name = "/dev/xvda"
+#     ebs {
+#       volume_size = 30
+#     }
+#   }
+
+#   network_interfaces {
+#     device_index              = 0
+#     subnet_id                 = aws_subnet.example.id
+#     security_groups           = [aws_security_group.example.id]
+#     associate_public_ip_address = true
+#   }
+
+#   tag_specifications {
+#     resource_type = "instance"
+#     tags = {
+#       Name = "example-instance"
+#     }
+#   }
+# }
+
+# resource "aws_subnet" "example" {
+#   vpc_id                  = aws_vpc.example.id
+#   cidr_block              = "10.0.0.0/24"
+#   availability_zone       = "us-west-2a"
+# }
+
+# resource "aws_vpc" "example" {
+#   cidr_block = "10.0.0.0/16"
+# }
+
+# resource "aws_security_group" "example" {
+#   name        = "example-security-group"
+#   description = "Example security group"
+
+#   ingress {
+#     from_port   = 22
+#     to_port     = 22
+#     protocol    = "tcp"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+
+#   egress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "-1"
+#     cidr_blocks = ["0.0.0.0/0"]
+#   }
+# }
+
+
+
+
+
+//
+
+
+
 
 
 ///associate_public_ip_address = true

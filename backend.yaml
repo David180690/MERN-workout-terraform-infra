@@ -35,6 +35,8 @@ spec:
             configMapKeyRef:
               name: mongo-config
               key: mongo-url
+        - name: MONGO_URI
+          value: 'mongodb://mongo-service:8080/workout'
 
 
 
@@ -45,7 +47,10 @@ kind: Service
 metadata:
   name: node-backend-service
 spec:
-  type: NodePort
+  # mongo lehet deploy helmmel
+  #type: NodePort default clusterIp   frontend loadbalacer /// ha ingress clusterip  (ingress controller---helm chart)
+  # beanstalk node-hoz
+  # 
   selector:
   
     app: node-backend
@@ -55,4 +60,5 @@ spec:
       targetPort: 5000
       NodePort: 30100
 # 30000-32767 is valid
+
 
