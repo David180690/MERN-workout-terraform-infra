@@ -1,5 +1,5 @@
-resource "aws_iam_role" "node_mern" {
-  name = "eks-node-group-node_mern"
+resource "aws_iam_role" "nodes-dd" {
+  name = "eks-node-group-nodes-dd"
 
   assume_role_policy = jsonencode({
     Statement = [{
@@ -13,25 +13,25 @@ resource "aws_iam_role" "node_mern" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "node_mern-AmazonEKSWorkerNodePolicy" {
+resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = aws_iam_role.node_mern.name
+  role       = aws_iam_role.nodes-dd.name
 }
 
-resource "aws_iam_role_policy_attachment" "node_mern-AmazonEKS_CNI_Policy" {
+resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.node_mern.name
+  role       = aws_iam_role.nodes-dd.name
 }
 
-resource "aws_iam_role_policy_attachment" "node_mern-AmazonEC2ContainerRegistryReadOnly" {
+resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.node_mern.name
+  role       = aws_iam_role.nodes-dd.name
 }
 
-resource "aws_eks_node_group" "private-node_mern" {
+resource "aws_eks_node_group" "private-nodes-dd" {
   cluster_name    = aws_eks_cluster.demo_mern.name
-  node_group_name = "private-node_mern"
-  node_role_arn   = aws_iam_role.node_mern.arn
+  node_group_name = "private-nodes-dd"
+  node_role_arn   = aws_iam_role.nodes-dd.arn
 
   subnet_ids = [
     aws_subnet.private-eu-central-1a.id,
@@ -67,9 +67,9 @@ resource "aws_eks_node_group" "private-node_mern" {
   # }
 
   depends_on = [
-    aws_iam_role_policy_attachment.node_mern-AmazonEKSWorkerNodePolicy,
-    aws_iam_role_policy_attachment.node_mern-AmazonEKS_CNI_Policy,
-    aws_iam_role_policy_attachment.node_mern-AmazonEC2ContainerRegistryReadOnly,
+    aws_iam_role_policy_attachment.nodes-dd-AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.nodes-dd-AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.nodes-dd-AmazonEC2ContainerRegistryReadOnly,
   ]
 }
 
