@@ -4,6 +4,7 @@ kind: ServiceAccount
 metadata:
   name: aws-test
   namespace: default
+  ## itt kapja meg a service account az adott oidc-t
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::424432388155:role/test-oidc
 ---
