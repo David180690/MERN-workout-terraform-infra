@@ -12,17 +12,17 @@ resource "aws_iam_role" "nodes-dd" {
     Version = "2012-10-17"
   })
 }
-
+# describe instance /volumes stb
 resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.nodes-dd.name
 }
-
+# 
 resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.nodes-dd.name
 }
-
+# download images ecr repo
 resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.nodes-dd.name
@@ -44,8 +44,12 @@ resource "aws_eks_node_group" "private-nodes-dd" {
   scaling_config {
     desired_size = 1
     max_size     = 5
-    min_size     = 0
+    min_size     = 1
   }
+  #ami_type = "AL2_x86_64"
+  #disk_size=20
+  #force_update_version =false
+
 
   update_config {
     max_unavailable = 1

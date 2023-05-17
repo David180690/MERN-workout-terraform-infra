@@ -23,10 +23,10 @@ resource "aws_iam_role_policy_attachment" "demo-AmazonEKSClusterPolicy_mern" {
 }
 
 variable "cluster_name" {
-  default = "demo_mern"
-  type = string
+  default     = "demo_mern"
+  type        = string
   description = "AWS EKS Cluster Name"
- # nullable = false
+  # nullable = false
 }
 
 resource "aws_eks_cluster" "demo_mern" {
@@ -34,6 +34,9 @@ resource "aws_eks_cluster" "demo_mern" {
   role_arn = aws_iam_role.demo_mern.arn
 
   vpc_config {
+
+   # endpoint_private_access =false
+   # endpoint_public_access = true
     subnet_ids = [
       aws_subnet.private-eu-central-1a.id,
       aws_subnet.private-eu-central-1b.id,
