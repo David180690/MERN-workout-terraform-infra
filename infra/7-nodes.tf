@@ -29,6 +29,7 @@ resource "aws_iam_role_policy_attachment" "nodes-dd-AmazonEC2ContainerRegistryRe
 }
 
 resource "aws_eks_node_group" "private-nodes-dd" {
+  # melyik eks clusterhez tartozik
   cluster_name    = aws_eks_cluster.demo_mern.name
   node_group_name = "private-nodes-dd"
   node_role_arn   = aws_iam_role.nodes-dd.arn

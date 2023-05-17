@@ -20,7 +20,7 @@ resource "aws_subnet" "private-eu-central-1b" {
     "Name"                            = "private-eu-central-1b"
     "kubernetes.io/role/internal-elb" = "1"
     "kubernetes.io/cluster/demo_mern"      = "shared"
-    #owned
+    #owned ha ccsak az adott fentebb megadott cluster hasznalhatja! shared ha shared with other services vagy masik cluster
   }
 }
 
