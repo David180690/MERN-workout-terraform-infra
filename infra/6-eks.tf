@@ -32,7 +32,7 @@ variable "cluster_name" {
 resource "aws_eks_cluster" "demo_mern" {
   name     = var.cluster_name
   role_arn = aws_iam_role.demo_mern.arn
-
+#variable .tf fileba
   vpc_config {
 
    # endpoint_private_access =false

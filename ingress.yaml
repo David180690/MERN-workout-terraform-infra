@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  #  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  #nginx loadbalancer ip address
+  - host: a6d3ef78630a242f4a0b7e99dccc8100-1509135470.eu-central-1.elb.amazonaws.com
+    http:
+      paths:
+      - path: /hostname
+        pathType: Prefix
+        backend:
+          service:
+            name: hostname-service
+            # node-os server
+            port:
+              number: 8091

@@ -18,7 +18,7 @@ resource "aws_route_table" "private_mern" {
       vpc_peering_connection_id  = ""
     },
   ]
-
+# proba torold...
   tags = {
     Name = "private_mern"
   }

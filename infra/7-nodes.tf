@@ -50,7 +50,7 @@ resource "aws_eks_node_group" "private-nodes-dd" {
   #ami_type = "AL2_x86_64"
   #disk_size=20
   #force_update_version =false
-
+  #for ciklus +>set
 
   update_config {
     max_unavailable = 1

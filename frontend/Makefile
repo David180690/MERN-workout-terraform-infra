@@ -1,5 +1,5 @@
 build:
-	docker build -t react-app .
+	docker build -t david8bullet/mern_workout_terraform_infra_frontend .
 
 run:
-	docker run -i -d -p 3000:3000 react-app
+	docker run -i -d -p 3000:3000 david8bullet/mern_workout_terraform_infra_frontend

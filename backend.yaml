@@ -20,6 +20,8 @@ spec:
         ports:
         - containerPort: 5000
         env:
+        - name: PORT 
+          value: "5000"
         - name: USER_NAME
           valueFrom:
             secretKeyRef:
@@ -30,6 +32,7 @@ spec:
             secretKeyRef:
               name: mongo-secret
               key: mongo-password
+          #megnezni miert van duplicate
         - name: USER_PWD
           valueFrom:
             configMapKeyRef:
