@@ -1,21 +1,4 @@
 
- 
-
-# FROM node:14-slim
-
-# WORKDIR /usr/src/app
-
-# COPY ./package.json ./
-# COPY ./package-lock.json ./
-
-# RUN npm install
-
-# COPY . .
-
-# EXPOSE 5000
-
-# CMD [ "npm", "start" ]
-
 
 # Use a Node.js base image
 FROM node:14.17.0-alpine
@@ -34,6 +17,8 @@ COPY . .
 
 # Build the React app
 RUN npm run build
+
+EXPOSE 3000
 
 # Set the command to start the app
 CMD ["npm", "start"]
