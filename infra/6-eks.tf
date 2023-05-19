@@ -21,22 +21,11 @@ resource "aws_iam_role_policy_attachment" "demo-AmazonEKSClusterPolicy_mern" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
   role       = aws_iam_role.demo_mern.name
 }
-
-variable "cluster_name" {
-  default     = "demo_mern"
-  type        = string
-  description = "AWS EKS Cluster Name"
-  # nullable = false
-}
-
 resource "aws_eks_cluster" "demo_mern" {
   name     = var.cluster_name
   role_arn = aws_iam_role.demo_mern.arn
-#variable .tf fileba
   vpc_config {
 
-   # endpoint_private_access =false
-   # endpoint_public_access = true
     subnet_ids = [
       aws_subnet.private-eu-central-1a.id,
       aws_subnet.private-eu-central-1b.id,

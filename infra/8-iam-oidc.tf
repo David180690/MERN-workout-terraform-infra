@@ -11,4 +11,3 @@ resource "aws_iam_openid_connect_provider" "eks" {
   #url = "https://oidc.eks.eu-central-1.amazonaws.com/id/18F5E4676F6C8C50DCB1935BFDF7569E"
 }
 
-#kubernetes tudjon aws-t hivni
