@@ -2,14 +2,14 @@
 version: "3"
 services:
   react-app:
-    image: react-app
+    image: david8bullet/mern_workout_terraform_infra_frontend
     stdin_open: true
     ports: 
       - "3000:3000"
     networks:
       - mern-app
   api-server:
-    image: api-server
+    image: david8bullet/mern_workout_terraform_infra_backend
     ports:
       - "5000:5000"
     networks:
