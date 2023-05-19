@@ -1,7 +1,7 @@
 
 build:
-	cd server && $(MAKE) build
-	cd client && $(MAKE) build
+	cd backend && $(MAKE) build
+	cd frontend && $(MAKE) build
 
 run:
 	docker-compose up
